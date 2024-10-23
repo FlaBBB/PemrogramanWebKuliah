@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <title>Home</title>
+    </head>
+    <body>
+        <div class="navbar navbar-expand-lg" style="background-color: #5b9bd5">
+            <div class="collapse navbar-collapse px-4">
+                <a class="navbar-brand text-white me-auto" href="index.php"
+                    >Laundry XYZ</a
+                >
+            </div>
+        </div>
+        <div class="container position-absolute top-50 start-50 translate-middle" style="width: 30%!important;">
+            <div class="alert alert-danger visually-hidden" role="alert" id="alertErrors"></div>
+            <div class="card">
+                <div class="card-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="inputUsername" class="form-label"
+                                >Username</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="inputUsername"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputPassword" class="form-label"
+                                >Password</label
+                            >
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="inputPassword"
+                            />
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-subtle me-2">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#loginForm").on("submit", function (e) {
+                    e.preventDefault();
+
+                    var formData = {
+                        username: $("#inputUsername").val(),
+                        password: $("#inputPassword").val(),
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "login.php",
+                        data: formData,
+                        dataType: "json",
+                        success: function (response) {
+                            window.location.href = "index.php";
+                        },
+                        error: function (xhr, status, error) {
+                            let message = xhr.responseJSON.message;
+
+                            let alert_tag = $("#alertErrors");
+
+                            alert_tag.removeClass("visually-hidden");
+                            alert_tag.text(message);
+                        },
+                    });
+                });
+
+                $("#cancelButton").on("click", function () {
+                    $("#loginForm")[0].reset();
+                });
+            });
+        </script>
+    </body>
+</html>
